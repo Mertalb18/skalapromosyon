@@ -1,0 +1,19 @@
+.carousel-inner {
+    height: 50vh;
+}
+
+.sub-category-name {
+    top: 5%;
+}
+
+.product-image {
+    width: 5em;
+}
+
+.product-quantity {
+    width: 50%;
+}
+
+.pointer {
+    cursor: pointer;
+}

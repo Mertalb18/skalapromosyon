@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Fontawesome CDN -->
+  <script src="https://kit.fontawesome.com/dbe32514ea.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+  {% block css_files %} {% endblock css_files %}
+  <title>{% block title %} {% endblock title %} | Skala Promosyon</title>
+</head>
+
+<body class="fw-semibold bg-light">
+  {% include "partials/_navbar.html" %}
+
+  {% if messages %}
+    {% for i in messages  %}
+
+    <div class="alert alert-{{i.tags}} text-center"  role="alert">{{i}}</div>
+
+    {% endfor %}
+
+    {% endif %}
+
+  {% block content %}
+
+  {% endblock content %}
+
+  {% include "partials/_footer.html" %}
+
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'js/base.js' %}"></script>
+  {% block js_files %} {% endblock js_files %}
+  
+</body>
+
+</html>

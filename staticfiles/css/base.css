@@ -1,0 +1,29 @@
+body {
+    min-height: 100vh;
+}
+
+.logo {
+    width: auto;
+    max-height: 4rem;
+}
+
+.search-bar {
+    width: 16rem;
+}
+
+.search-bar::placeholder {
+    position: absolute;
+    left: 0.5rem;
+}
+
+.search-bar-button {
+    z-index: 9999 !important;
+    position: absolute !important;
+    bottom: 0;
+    right: 5%;
+}
+
+footer {
+    width: 100%;
+    height: 200px !important;
+}

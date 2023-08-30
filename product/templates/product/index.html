@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css_files %}
+<link rel="stylesheet" href="{% static 'product/css/product.css' %}">
+{% endblock css_files %}
+
+{% block title %} Homepage {% endblock title %}
+
+{% block content %}
+<!-- Slider start -->
+<div id="carouselExampleAutoplaying" class="carousel slide mb-2" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+      aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+      aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+      aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active" data-bs-interval="10000">
+      <div class="container-fluid p-0 d-flex">
+        <img src="https://picsum.photos/400/300?random=1" class="d-block w-100" alt="...">
+        <img src="https://picsum.photos/400/300?random=2" class="d-block w-100" alt="...">
+      </div>
+    </div>
+    <div class="carousel-item" data-bs-interval="20000">
+      <div class="container-fluid p-0 d-flex">
+        <img src="https://picsum.photos/400/300?random=3" class="d-block w-100" alt="...">
+        <img src="https://picsum.photos/400/300?random=4" class="d-block w-100" alt="...">
+      </div>
+    </div>
+    <div class="carousel-item" data-bs-interval="30000">
+      <div class="container-fluid p-0 d-flex">
+        <img src="https://picsum.photos/400/300?random=5" class="d-block w-100" alt="...">
+        <img src="https://picsum.photos/400/300?random=6" class="d-block w-100" alt="...">
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+<!-- Slider end -->
+<!-- Content start -->
+<section>
+  <div class="container mb-5">
+    <div class="container d-flex justify-content-between mb-1 border-bottom border-black">
+      <h4>Kategoriler</h4>
+    </div>
+    <div class="row bg-white">
+      {% for category in categories %}
+      <div class="col-3 py-2">
+        <a href="{% url 'products_by_category' category.categorySlug %}">
+          <div class="card border-0 position-relative">
+            <div class="sub-category-name position-absolute bg-white rounded-end-5 bg-opacity-75">
+              <p class="m-0 p-2">{{ category.categoryName }}</p>
+            </div>
+            {% with random_product_image_url=category.get_random_product_image_url %}
+              {% if random_product_image_url %}
+                <img src="{{ random_product_image_url }}" class="card-img-top rounded-0" alt="...">
+              {% endif %}
+            {% endwith %}
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    <!-- Content cards end -->
+  </div>
+</section>
+<!-- Content end -->
+<!-- Recommended start -->
+<aside>
+  <div class="container d-flex justify-content-between mb-1 border-bottom border-black">
+    <h4>Öne Çıkan Ürünler</h4>
+    <div class="nav-arrow">
+      <button type="button" class="border-0 bg-transparent text-warning"><i
+          class="fa-solid fa-square-caret-left fs-4"></i></button>
+      <button type="button" class="border-0 bg-transparent text-warning"><i
+          class="fa-solid fa-square-caret-right fs-4"></i></button>
+    </div>
+  </div>
+  <div class="container mb-5">
+    <div class="row py-2"> <!--  Owl carousel yapılacak. Jquery eklentisi -->
+      {% for product in products %}
+          <div class="col-3 card-product">
+            <a href="{% url 'product_details' product.productSlug %}" class="text-decoration-none text-reset">
+              <div class="card card-body border mb-3">
+                <img src="{{ product.productImage.url }}" class="card-img-top rounded-0" alt="...">
+                <hr class="">
+                <h6 class="card-title text-center mb-3">{{ product.productCode }}</h6>
+                <p class="bg-body-secondary rounded p-2 mb-1">Stok: {{ product.productStock }}</p>
+                <p class="text-warning bg-body-secondary rounded p-2 m-0">Fiyat: ₺ {{ product.productPrice }}</p>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+    </div>
+  </div>
+</aside>
+<!-- Recommended end -->
+{% endblock content %}
+
+{% block js_files %}
+<script src="{% static 'product/js/product.js' %}"></script>
+{% endblock js_files %}

@@ -1,0 +1,57 @@
+{% load static %}
+<!-- Header start -->
+<header>
+  <div class="container-fluid border-bottom p-2 mb-2">
+    <nav class="container navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">
+          <img class="logo" src="{% static 'img/skala_logo.png' %}" alt="">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-around" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Anasayfa</a>
+            </li>
+            <li class="nav-item dropdown bg-body-secondary rounded-pill px-3">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid fa-bars"></i> Kategoriler
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                {% for category in categories %}
+                <li>
+                  <a class="dropdown-item" href="{% url 'products_by_category' category.categorySlug %}">{{ category.categoryName }}</a>
+                </li>
+                {% endfor %}
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Hakkımızda</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">İletişim</a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'mail_order' %}" class="nav-link"><i
+                  class="fa-solid fa-receipt fs-5 me-2"></i> Mail Order</a>
+            </li>
+          </ul>
+          <form class="d-flex" role="search" method="GET">
+            <div class="input-group position-relative">
+              <input type="search" class="form-control search-bar border border-secondary rounded-pill p-0 ps-2"
+                placeholder="Ürün Ara" name="search" value="{{ search }}" aria-label="Ürün Ara" aria-describedby="button-addon2">
+              <button class="btn search-bar-button p-0 m-0" type="submit">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- Header end -->

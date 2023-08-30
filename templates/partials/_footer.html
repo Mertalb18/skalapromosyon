@@ -1,0 +1,33 @@
+{% load static %}
+<!-- Footer start -->
+<footer>
+    <div class="container-fluid bg-body-secondary border-top border-5">
+        <div class="container p-4 d-flex justify-content-evenly">
+            <div class="col-4">
+                <h2>Skala Promosyon</h2>
+                <p class="fw-normal m-0">1212/12 Sk. No:12/A Yemek Merkezi</p>
+                <strong>İzmir</strong>
+                <br><br>
+                <p class="fw-normal m-0">+90 (123) 123 12 12</p>
+                <p class="fw-normal m-0">+90 (123) 456 44 45</p>
+            </div>
+            <div class="col-4">
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'home' %}"
+                        class="list-group-item list-group-item-action bg-transparent border-0 text-warning">Anasayfa</a>
+                    <a href="#"
+                        class="list-group-item list-group-item-action bg-transparent border-0 text-warning">Hakkımızda</a>
+                    <a href="#"
+                        class="list-group-item list-group-item-action bg-transparent border-0 text-warning">İletişim</a>
+                </div>
+            </div>
+            <div class="col-4 text-center">
+                <p>Skala Promosyon, en ucuz promosyon.</p>
+                <img src="{% static 'img/skala_logo.png' %}" alt="" class="logo">
+                <br><br>
+                <p>Developed by Oledoid</p>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Footer end -->

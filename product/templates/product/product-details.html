@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css_files %}
+<link rel="stylesheet" href="{% static 'product/css/product.css' %}">
+{% endblock css_files %}
+
+{% block title %} Product Details {% endblock title %}
+
+{% block content %}
+<div class="alert alert-success text-center" role="alert" id="success-alert" style="display: none;">
+    Ürün başarıyla istek listesine eklendi.
+</div>
+<div class="container mb-5">
+    <div class="row py-2">
+        <div class="col-2">
+            <div class="list-group">
+                {% for category in categories %}
+                  <a href="{% url 'products_by_category' category.categorySlug %}" class="list-group-item list-group-item-action">
+                  {{ category.categoryName }}</a>
+                {% endfor %}
+              </div>
+        </div>
+        <div class="col-10">
+            <div class="row">
+                <div class="col-7">
+                    <div class="card card-body border mb-3">
+                        <img src="{{ product.productImage.url }}" class="card-img-top rounded-0" alt="...">
+                    </div>
+                </div>
+                <div class="col-5 position-relative">
+                    <h6 class="card-title text-center mb-3" id="product-name">{{ product.productName }}</h6>
+                    <table class="table w-75 mb-3 m-auto table-striped table-hover">
+                        <tbody>
+                            <tr>
+                                <td>Ürün Kodu</td>
+                                <td>:</td>
+                                <td id="product-code">{{ product.productCode }}</td>
+                            </tr>
+                            <tr>
+                                <td>Fiyat</td>
+                                <td>:</td>
+                                <td id="product-price">₺{{ product.productPrice }}</td>
+                            </tr>
+                            <tr>
+                                <td>Stok</td>
+                                <td>:</td>
+                                <td>{{ product.productStock }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <hr class="">
+                    <p class="mb-5">{{ product.productInfo }}</p>
+                    <div class="container-fluid p-0 d-flex justify-content-between mb-3 position-absolute bottom-0">
+                        <div class="d-flex align-items-center">
+                            <p class="m-0 me-2">Adet:</p>
+                            <input type="number" class="form-control product-quantity me-2" id="product-amount"
+                                name="quantity" value="1" min="1" max="{{ product.productStock }}">
+                        </div>
+                        <button class="btn btn-warning" type="button" id="btn-add-product">İstek Listesine Ekle</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-7 d-flex justify-content-center">
+                    <button type="button" class="p-1 border-1 border-warning me-1">
+                        <img class="product-image" src="https://picsum.photos/200" alt="">
+                    </button>
+                    <button type="button" class="p-1 border-1 border-warning me-1">
+                        <img class="product-image" src="https://picsum.photos/200" alt="">
+                    </button>
+                    <button type="button" class="p-1 border-1 border-warning me-1">
+                        <img class="product-image" src="https://picsum.photos/200" alt="">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block js_files %}
+<script src="{% static 'product/js/product.js' %}"></script>
+{% endblock js_files %}
