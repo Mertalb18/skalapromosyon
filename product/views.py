@@ -16,9 +16,9 @@ def home(request):
 
     return render(request, "product/index.html", context)
 
-def products_by_category(request, slug):
+def products_by_category(request, c_slug):
     categories = Category.objects.all()
-    products = Category.objects.get(categorySlug = slug).product_set.filter(isActive = True)
+    products = Category.objects.get(categorySlug = c_slug).product_set.filter(isActive = True)
 
     context = {
         "categories": categories,
@@ -27,9 +27,9 @@ def products_by_category(request, slug):
 
     return render(request, "product/products.html", context)
 
-def product_details(request, slug):
+def product_details(request, c_slug, p_slug):
     categories = Category.objects.all()
-    product = Product.objects.get(productSlug = slug)
+    product = Product.objects.get(productSlug = p_slug)
 
     context = {
         "categories": categories,
