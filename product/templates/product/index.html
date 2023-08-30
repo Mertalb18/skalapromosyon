@@ -91,7 +91,7 @@
     <div class="row py-2"> <!--  Owl carousel yapılacak. Jquery eklentisi -->
       {% for product in products %}
           <div class="col-3 card-product">
-            <a href="{% url 'product_details' product.productSlug %}" class="text-decoration-none text-reset">
+            <a href="{% url 'product_details' c_slug=product.productCategory.first.categorySlug p_slug=product.productSlug %}" class="text-decoration-none text-reset">
               <div class="card card-body border mb-3">
                 <img src="{{ product.productImage.url }}" class="card-img-top rounded-0" alt="...">
                 <hr class="">
