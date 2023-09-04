@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product, Category
+from product.cart import Cart
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
@@ -38,6 +39,29 @@ def product_details(request, c_slug, p_slug):
 
     return render(request, "product/product-details.html", context)
 
+def cart_add(request, id):
+    cart = Cart(request)
+    product = get_object_or_404(Product, id=id)
+
+    if request.method == "POST":
+        quantity = int(request.POST["quantity"])
+    
+    cart.add(product=product,
+             quantity=quantity,
+             override_quantity=False
+             )
+    return redirect("mail_order")
+
+def cart_remove(request, id):
+    cart = Cart(request)
+    product = get_object_or_404(Product, id=id)
+    cart.remove(product)
+    return redirect("mail_order")
+
+def cart_clear(request):
+    cart = Cart(request)
+    cart.clear()
+    return redirect("mail_order")
 
 def mail_order(request):
     categories = Category.objects.all()
@@ -51,6 +75,8 @@ def mail_order(request):
         personSurname = request.POST["kullanici_soyadi"]
         personPhone = request.POST["kullanici_tel"]
         personMail = request.POST["kullanici_mail"]
+        cart = Cart(request)
+        counter = 1
 
         subject = "Ürün Sipariş Bilgileri"
         message = f"""
@@ -61,6 +87,19 @@ def mail_order(request):
 
         Ürün Sipariş Detayları:
         """
+
+        for item in cart:
+            productNo = counter
+            productCode = item["code"]
+            productName = item["name"]
+            productQuantity = item["quantity"]
+            message += f"""
+            No: {productNo}
+            Ürün Kodu: {productCode}
+            Ürün Adı: {productName}
+            Miktar: {productQuantity}
+            """
+            counter += 1
 
         try:
             send_mail(

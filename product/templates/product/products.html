@@ -1,12 +1,41 @@
 {% extends "base.html" %}
 {% load static %}
+{% load breadcrumb_tags %}
+
+{% block css_files %}
+<link rel="stylesheet" href="{% static 'product/css/product.css' %}">
+{% endblock css_files %}
 
 {% block title %} Products {% endblock title %}
 
 {% block content %}
 <div class="container mb-5">
+  <div class="d-flex align-items-center justify-content-between">
+    <nav style="--bs-breadcrumb-divider: '&raquo;'" aria-label="breadcrumb">
+      <div class="d-flex align-items-center">
+        <ol class="breadcrumb m-0">
+          <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-warning fw-normal" data-category="" data-product=""><i class="fa-solid fa-house"></i></a></li>
+          {% breadcrumbs request %}
+        </ol>
+      </div>
+    </nav>
+    <div class="d-flex align-items-center">
+      <label>Sıralama: &nbsp;</label>
+      <div class="dropdown">
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Dropdown link
+        </a>
+      
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Action</a></li>
+          <li><a class="dropdown-item" href="#">Another action</a></li>
+          <li><a class="dropdown-item" href="#">Something else here</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
   <div class="row py-2">
-    <div class="col-2">
+    <div class="col-xl-2 col-md-4 d-none d-md-block mb-3">
       <div class="list-group">
         {% for category in categories %}
           <a href="{% url 'products_by_category' category.categorySlug %}" class="list-group-item list-group-item-action">
@@ -14,10 +43,10 @@
         {% endfor %}
       </div>
     </div>
-    <div class="col-10">
+    <div class="col-xl-10 col-md-8">
       <div class="row">
         {% for product in products %}
-          <div class="col-3 card-product">
+          <div class="col-xl-3 col-lg-4 col-md-6">
             <a href="{% url 'product_details' c_slug=product.productCategory.first.categorySlug p_slug=product.productSlug %}" class="text-decoration-none text-reset">
               <div class="card card-body border mb-3">
                 <img src="{{ product.productImage.url }}" class="card-img-top rounded-0" alt="...">

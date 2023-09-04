@@ -56,7 +56,7 @@
     </div>
     <div class="row bg-white">
       {% for category in categories %}
-      <div class="col-3 py-2">
+      <div class="col-lg-3 col-md-4 col-sm-6 py-2">
         <a href="{% url 'products_by_category' category.categorySlug %}">
           <div class="card border-0 position-relative">
             <div class="sub-category-name position-absolute bg-white rounded-end-5 bg-opacity-75">
@@ -90,7 +90,7 @@
   <div class="container mb-5">
     <div class="row py-2"> <!--  Owl carousel yapılacak. Jquery eklentisi -->
       {% for product in products %}
-          <div class="col-3 card-product">
+          <div class="col-lg-3 col-md-4 col-sm-6 card-product">
             <a href="{% url 'product_details' c_slug=product.productCategory.first.categorySlug p_slug=product.productSlug %}" class="text-decoration-none text-reset">
               <div class="card card-body border mb-3">
                 <img src="{{ product.productImage.url }}" class="card-img-top rounded-0" alt="...">
@@ -107,7 +107,3 @@
 </aside>
 <!-- Recommended end -->
 {% endblock content %}
-
-{% block js_files %}
-<script src="{% static 'product/js/product.js' %}"></script>
-{% endblock js_files %}

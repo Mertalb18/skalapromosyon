@@ -66,6 +66,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'product.context_processors.cart',
             ],
         },
     },
@@ -151,3 +152,6 @@ EMAIL_HOST = "smtp.office365.com"  # Use your SMTP server details
 EMAIL_HOST_USER = "mertalbahar@windowslive.com"  # Use your SMTP username
 EMAIL_HOST_PASSWORD = "qqeshwikflfkptkl"  # Use your SMTP password
 EMAIL_SEND_USER = "mertalbahar@windowslive.com"
+
+CART_SESSION_ID = 'cart'
+SESSION_COOKIE_AGE = 604800

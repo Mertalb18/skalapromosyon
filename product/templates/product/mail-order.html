@@ -42,11 +42,21 @@
                         <th scope="col">Ürün Kodu</th>
                         <th scope="col">Ürün Adı</th>
                         <th scope="col">Ürün Adedi</th>
-                        <th scope="col"><i class="fa-solid fa-trash pointer" id="btn-clear-products"></i></th>
+                        <th scope="col">Ürün Fiyatı</th>
+                        <th scope="col"><a href="{% url 'cart_clear' %}" class="text-decoration-none text-danger"><i class="fa-solid fa-trash"></i></a></th>
                     </tr>
                 </thead>
-                <tbody id="product-order-table">
-
+                <tbody>
+                    {% for item in cart %}
+                        <tr>
+                            <th scope="col">{{ forloop.counter }}</th>
+                            <th scope="col">{{ item.code }}</th>
+                            <th scope="col">{{ item.name }}</th>
+                            <th scope="col">{{ item.quantity }}</th>
+                            <th scope="col">{{ item.price }}</th>
+                            <th scope="col"><a href="{% url 'cart_remove' id=item.product.id %}" class="text-decoration-none text-danger"><i class="fa-solid fa-trash"></i></a></th>
+                        </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -57,7 +67,3 @@
     </div>
 </form>
 {% endblock content %}
-
-{% block js_files %}
-<script src="{% static 'product/js/product.js' %}"></script>
-{% endblock js_files %}
