@@ -34,6 +34,10 @@ class Product(models.Model):
     productSlug = models.SlugField(null = False, blank = True, unique = True, db_index = True, editable = False)
     productCategory = models.ManyToManyField(Category, verbose_name="Kategoriler")
 
+    class Meta:
+        verbose_name = 'Product'
+        verbose_name_plural = 'Products'
+
     def __str__(self):
         return self.productName
     
