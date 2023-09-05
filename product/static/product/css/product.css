@@ -18,3 +18,7 @@
 .pointer {
     cursor: pointer;
 }
+
+.product-info {
+    height: 12rem;
+}

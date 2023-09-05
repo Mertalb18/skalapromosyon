@@ -13,94 +13,91 @@
     Ürün başarıyla istek listesine eklendi.
 </div>
 <div class="container mb-5">
-    <div class="d-flex align-items-center justify-content-between">
-        <nav style="--bs-breadcrumb-divider: '&raquo;'" aria-label="breadcrumb">
-          <div class="d-flex align-items-center">
-            <ol class="breadcrumb m-0">
-              <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-warning fw-normal"><i class="fa-solid fa-house"></i></a></li>
-              {% breadcrumbs request %}
-            </ol>
-          </div>
-        </nav>
-        <div class="d-flex align-items-center">
-          <label>Sıralama: &nbsp;</label>
-          <div class="dropdown">
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Dropdown link
-            </a>
-          
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-          </div>
+    <div class="row">
+        <div class="d-flex align-items-center justify-content-between border py-2">
+            <nav style="--bs-breadcrumb-divider: '&raquo;'" aria-label="breadcrumb">
+                <div class="d-flex align-items-center">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}"
+                                class="text-decoration-none text-warning fw-normal" data-category="" data-product=""><i
+                                    class="fa-solid fa-house"></i></a></li>
+                        {% breadcrumbs request %}
+                    </ol>
+                </div>
+            </nav>
         </div>
-      </div>
+    </div>
     <div class="row py-2">
-        <div class="col-2">
+        <div class="col-xl-2 col-md-4 d-none d-md-block mb-3">
             <div class="list-group">
                 {% for category in categories %}
-                  <a href="{% url 'products_by_category' category.categorySlug %}" class="list-group-item list-group-item-action">
-                  {{ category.categoryName }}</a>
+                <a href="{% url 'products_by_category' category.categorySlug %}"
+                    class="list-group-item list-group-item-action">
+                    {{ category.categoryName }}</a>
                 {% endfor %}
-              </div>
+            </div>
         </div>
-        <div class="col-10">
+        <div class="col-xl-10 col-md-8">
             <div class="row">
-                <div class="col-7">
-                    <div class="card card-body border mb-3">
-                        <img src="{{ product.productImage.url }}" class="card-img-top rounded-0" alt="...">
+                <div class="col-lg-7">
+                    <div class="row">
+                        <div class="card card-body border mb-3">
+                            <img src="{{ product.productImage.url }}" class="card-img-top rounded-0" alt="...">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="d-flex justify-content-center mb-lg-0 mb-4">
+                            <button type="button" class="p-1 border-1 border-warning me-1">
+                                <img class="product-image" src="https://picsum.photos/200" alt="">
+                            </button>
+                            <button type="button" class="p-1 border-1 border-warning me-1">
+                                <img class="product-image" src="https://picsum.photos/200" alt="">
+                            </button>
+                            <button type="button" class="p-1 border-1 border-warning me-1">
+                                <img class="product-image" src="https://picsum.photos/200" alt="">
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div class="col-5 position-relative">
-                    <h6 class="card-title text-center mb-3" id="product-name">{{ product.productName }}</h6>
-                    <table class="table w-75 mb-3 m-auto table-striped table-hover">
-                        <tbody>
-                            <tr>
-                                <td>Ürün Kodu</td>
-                                <td>:</td>
-                                <td id="product-code">{{ product.productCode }}</td>
-                            </tr>
-                            <tr>
-                                <td>Fiyat</td>
-                                <td>:</td>
-                                <td id="product-price">₺{{ product.productPrice }}</td>
-                            </tr>
-                            <tr>
-                                <td>Stok</td>
-                                <td>:</td>
-                                <td>{{ product.productStock }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <hr class="">
-                    <p class="mb-5">{{ product.productInfo }}</p>
-
-
-                        <form class="container-fluid p-0 d-flex justify-content-between mb-3 position-absolute bottom-0" action="{% url 'cart_add' id=product.id %}" method="POST">
+                <div class="col-lg-5 position-relative">
+                    <div class="row">
+                        <h6 class="card-title text-center mb-3" id="product-name">{{ product.productName }}</h6>
+                        <table class="table w-100 mb-3 m-auto table-striped table-hover">
+                            <tbody>
+                                <tr>
+                                    <td>Ürün Kodu</td>
+                                    <td>:</td>
+                                    <td id="product-code">{{ product.productCode }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Fiyat</td>
+                                    <td>:</td>
+                                    <td id="product-price">₺{{ product.productPrice }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Stok</td>
+                                    <td>:</td>
+                                    <td>{{ product.productStock }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <hr class="">
+                        <div class="product-info">
+                            <p class="mb-5">{{ product.productInfo }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <form class="p-0 d-flex justify-content-between mb-3 position-absolute bottom-0"
+                            action="{% url 'cart_add' id=product.id %}" method="POST">
                             {% csrf_token %}
                             <div class="d-flex align-items-center">
                                 <label for="quantity" class="m-0 me-2">Adet:</label>
-                                <input type="number" class="form-control product-quantity me-5" name="quantity" value="1" min="1" max="{{ product.productStock }}">
+                                <input type="number" class="form-control product-quantity me-5" name="quantity"
+                                    value="1" min="1" max="{{ product.productStock }}">
                             </div>
-                                <button class="btn btn-warning" type="submit">İstek Listesine Ekle</button>
+                            <button class="btn btn-warning" type="submit">Listeye Ekle</button>
                         </form>
-
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-7 d-flex justify-content-center">
-                    <button type="button" class="p-1 border-1 border-warning me-1">
-                        <img class="product-image" src="https://picsum.photos/200" alt="">
-                    </button>
-                    <button type="button" class="p-1 border-1 border-warning me-1">
-                        <img class="product-image" src="https://picsum.photos/200" alt="">
-                    </button>
-                    <button type="button" class="p-1 border-1 border-warning me-1">
-                        <img class="product-image" src="https://picsum.photos/200" alt="">
-                    </button>
+                    </div>
                 </div>
             </div>
         </div>
