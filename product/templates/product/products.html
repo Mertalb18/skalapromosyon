@@ -10,27 +10,29 @@
 
 {% block content %}
 <div class="container mb-5">
-  <div class="d-flex align-items-center justify-content-between">
-    <nav style="--bs-breadcrumb-divider: '&raquo;'" aria-label="breadcrumb">
-      <div class="d-flex align-items-center">
-        <ol class="breadcrumb m-0">
-          <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-warning fw-normal" data-category="" data-product=""><i class="fa-solid fa-house"></i></a></li>
-          {% breadcrumbs request %}
-        </ol>
-      </div>
-    </nav>
-    <div class="d-flex align-items-center">
-      <label>Sıralama: &nbsp;</label>
-      <div class="dropdown">
-        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Dropdown link
-        </a>
-      
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Action</a></li>
-          <li><a class="dropdown-item" href="#">Another action</a></li>
-          <li><a class="dropdown-item" href="#">Something else here</a></li>
-        </ul>
+  <div class="row my-2">
+    <div class="d-md-flex d-sm-block align-items-center justify-content-between border py-2">
+      <nav style="--bs-breadcrumb-divider: '&raquo;'" aria-label="breadcrumb">
+        <div class="d-flex align-items-center justify-content-center">
+          <ol class="breadcrumb m-md-0 mb-sm-3">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-warning fw-normal" data-category="" data-product=""><i class="fa-solid fa-house"></i></a></li>
+            {% breadcrumbs request %}
+          </ol>
+        </div>
+      </nav>
+      <div class="d-flex align-items-center justify-content-center">
+        <label for="">Sıralama: &nbsp;</label>
+        <div class="dropdown">
+          <a class="btn border dropdown-toggle" id="sort-by-btn" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Sıralama
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="?sort=stock_asc">Stoğa Göre Artan</a></li>
+            <li><a class="dropdown-item" href="?sort=stock_desc">Stoğa Göre Azalan</a></li>
+            <li><a class="dropdown-item" href="?sort=price_asc">Fiyata Göre Artan</a></li>
+            <li><a class="dropdown-item" href="?sort=price_desc">Fiyata Göre Azalan</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -62,4 +64,22 @@
     </div>
   </div>
 </div>
+
+<script>
+  const sortByBtn = document.getElementById("sort-by-btn");
+    const selectedSortOption = "{{ selected_sort_option|default:'stock_asc' }}";
+
+    // Map sorting options to their display text
+    const sortOptions = {
+        stock_asc: "Stoğa Göre Artan",
+        stock_desc: "Stoğa Göre Azalan",
+        price_asc: "Fiyata Göre Artan",
+        price_desc: "Fiyata Göre Azalan"
+    };
+
+    // Update the button text based on the selected option
+    if (selectedSortOption && sortOptions[selectedSortOption]) {
+        sortByBtn.innerText = `${sortOptions[selectedSortOption]}`;
+    }
+</script>
 {% endblock content %}

@@ -19,11 +19,25 @@ def home(request):
 
 def products_by_category(request, c_slug):
     categories = Category.objects.all()
+    category = Category.objects.get(categorySlug=c_slug)
     products = Category.objects.get(categorySlug = c_slug).product_set.filter(isActive = True)
+
+    sort_option = request.GET.get('sort', 'stock_asc')
+
+    if sort_option == 'stock_asc':
+        products = products.order_by('productStock')
+    elif sort_option == 'stock_desc':
+        products = products.order_by('-productStock')
+    elif sort_option == 'price_asc':
+        products = products.order_by('productPrice')
+    elif sort_option == 'price_desc':
+        products = products.order_by('-productPrice')
 
     context = {
         "categories": categories,
         "products": products,
+        "selected_category": category,
+        "selected_sort_option": sort_option,
     }
 
     return render(request, "product/products.html", context)
