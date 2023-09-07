@@ -82,22 +82,40 @@ def cart_add(request, id):
 
     if request.method == "POST":
         quantity = int(request.POST["quantity"])
-    
-    cart.add(product=product,
-             quantity=quantity,
-             override_quantity=False
-             )
+
+    try:  
+        cart.add(product=product,
+                quantity=quantity,
+                override_quantity=False
+                )
+        messages.success(request, "Ürün başarı ile eklendi.")
+
+    except Exception as e:
+        messages.error(request, "Ürün eklenirken bir hata oluştu. Lütfen tekrar deneyin.")
+
     return redirect("mail_order")
 
 def cart_remove(request, id):
-    cart = Cart(request)
-    product = get_object_or_404(Product, id=id)
-    cart.remove(product)
+    try:
+        cart = Cart(request)
+        product = get_object_or_404(Product, id=id)
+        cart.remove(product)
+        messages.success(request, "Ürün başarı ile silindi.")
+
+    except Exception as e:
+        messages.error(request, "Ürün silinirken bir hata oluştu. Lütfen tekrar deneyin.")
+
     return redirect("mail_order")
 
 def cart_clear(request):
-    cart = Cart(request)
-    cart.clear()
+    try:
+        cart = Cart(request)
+        cart.clear()
+        messages.success(request, "Sepet temizlendi.")
+
+    except:
+        messages.error(request, "Sepet temizlenirken bir hata oluştu. Lütfen tekrar deneyin.")
+
     return redirect("mail_order")
 
 def mail_order(request):
@@ -146,7 +164,6 @@ def mail_order(request):
                 [settings.EMAIL_SEND_USER],
                 fail_silently=False,
             )
-            
             messages.success(request, "Siparişiniz başarıyla oluşturuldu. Teşekkür ederiz!")
 
         except Exception as e:

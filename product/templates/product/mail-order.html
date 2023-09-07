@@ -8,20 +8,15 @@
 {% block title %} Mail Order {% endblock title %}
 
 {% block content %}
-<!-- Information message start -->
-<div class="alert alert-success text-center" role="alert" id="success-alert" style="display: none;">
-    Ürün başarıyla silindi.
-</div>
-<!-- Information message end -->
 <form class="w-auto m-auto mb-5" method="POST" id="orderForm" action="{% url 'mail_order' %}"
     enctype="multipart/form-data">
     {% csrf_token %}
-    <div class="container">
+    <div class="container mt-3">
         <div class="row">
             <!-- Client information form start -->
             <div class="col-lg-6">
                 <h2>Kart Sahibi Bilgileri</h2>
-                <div class="form-floating mb-3">
+                <div class="form-floating my-3">
                     <input type="text" class="form-control" id="floatingInput" name="kullanici_adi" placeholder="Adı">
                     <label for="floatingInput">Adı</label>
                 </div>
