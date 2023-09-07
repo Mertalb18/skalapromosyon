@@ -16,7 +16,8 @@
       <nav style="--bs-breadcrumb-divider: '&raquo;'" aria-label="breadcrumb">
         <div class="d-flex align-items-center justify-content-center">
           <ol class="breadcrumb m-md-0 mb-sm-3">
-            <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-warning fw-normal" data-category="" data-product=""><i class="fa-solid fa-house"></i></a></li>
+            <li class="breadcrumb-item"><a href="{% url 'home' %}"
+                class="text-decoration-none text-warning fw-normal"><i class="fa-solid fa-house"></i></a></li>
             {% breadcrumbs request %}
           </ol>
         </div>
@@ -26,7 +27,8 @@
       <div class="d-flex align-items-center justify-content-center">
         <label for="">Sıralama: &nbsp;</label>
         <div class="dropdown">
-          <a class="btn border dropdown-toggle" id="sort-by-btn" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="btn border dropdown-toggle" id="sort-by-btn" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
             Sıralama
           </a>
           <ul class="dropdown-menu">
@@ -50,17 +52,18 @@
     <div class="col-xl-10 col-md-8">
       <div class="row">
         {% for product in products %}
-          <div class="col-xl-3 col-lg-4 col-md-6">
-            <a href="{% url 'product_details' c_slug=product.productCategory.first.categorySlug p_slug=product.productSlug %}" class="text-decoration-none text-reset">
-              <div class="card card-body border mb-3">
-                <img src="{{ product.productImage.url }}" class="card-img-top rounded-0" alt="...">
-                <hr class="">
-                <h6 class="card-title text-center mb-3">{{ product.productCode }}</h6>
-                <p class="bg-body-secondary rounded p-2 mb-1">Stok: {{ product.productStock }}</p>
-                <p class="text-warning bg-body-secondary rounded p-2 m-0">Fiyat: ₺ {{ product.productPrice }}</p>
-              </div>
-            </a>
-          </div>
+        <div class="col-xl-3 col-lg-4 col-md-6">
+          <a href="{% url 'product_details' c_slug=product.productCategory.first.categorySlug p_slug=product.productSlug %}"
+            class="text-decoration-none text-reset">
+            <div class="card card-body border mb-3">
+              <img src="{{ product.productImage.url }}" class="card-img-top rounded-0" alt="...">
+              <hr class="">
+              <h6 class="card-title text-center mb-3">{{ product.productCode }}</h6>
+              <p class="bg-body-secondary rounded p-2 mb-1">Stok: {{ product.productStock }}</p>
+              <p class="text-warning bg-body-secondary rounded p-2 m-0">Fiyat: ₺ {{ product.productPrice }}</p>
+            </div>
+          </a>
+        </div>
         {% endfor %}
       </div>
     </div>
@@ -71,20 +74,20 @@
 <script>
   // Product order js start
   const sortByBtn = document.getElementById("sort-by-btn");
-    const selectedSortOption = "{{ selected_sort_option|default:'stock_asc' }}";
+  const selectedSortOption = "{{ selected_sort_option|default:'stock_asc' }}";
 
-    // Map sorting options to their display text
-    const sortOptions = {
-        stock_asc: "Stoğa Göre Artan",
-        stock_desc: "Stoğa Göre Azalan",
-        price_asc: "Fiyata Göre Artan",
-        price_desc: "Fiyata Göre Azalan"
-    };
+  // Map sorting options to their display text
+  const sortOptions = {
+    stock_asc: "Stoğa Göre Artan",
+    stock_desc: "Stoğa Göre Azalan",
+    price_asc: "Fiyata Göre Artan",
+    price_desc: "Fiyata Göre Azalan"
+  };
 
-    // Update the button text based on the selected option
-    if (selectedSortOption && sortOptions[selectedSortOption]) {
-        sortByBtn.innerText = `${sortOptions[selectedSortOption]}`;
-    }
+  // Update the button text based on the selected option
+  if (selectedSortOption && sortOptions[selectedSortOption]) {
+    sortByBtn.innerText = `${sortOptions[selectedSortOption]}`;
+  }
     // Product order js end
 </script>
 {% endblock content %}

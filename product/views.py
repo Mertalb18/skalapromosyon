@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product, Category
+from .models import Product, Category, Image
 from product.cart import Cart
 from django.contrib import messages
 from django.core.mail import send_mail
@@ -45,10 +45,12 @@ def products_by_category(request, c_slug):
 def product_details(request, c_slug, p_slug):
     categories = Category.objects.all()
     product = Product.objects.get(productSlug = p_slug)
+    images = Image.objects.filter(product = product)
 
     context = {
         "categories": categories,
         "product": product,
+        'images': images,
         "selected_category": c_slug,
     }
 

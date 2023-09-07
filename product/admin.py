@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product
+from .models import Category, Product, Image
 from django.utils.safestring import mark_safe
 
 @admin.register(Product)
@@ -22,3 +22,7 @@ class ProductAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("categoryName", "categorySlug",)
     readonly_fields = ("categorySlug",)
+
+@admin.register(Image)
+class ImageAdmin(admin.ModelAdmin):
+    list_display = ("product",)

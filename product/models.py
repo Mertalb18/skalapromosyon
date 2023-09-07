@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from django.core.validators import MinValueValidator
 import random
+from django.urls import reverse
 
 # Create your models here.
 class Category(models.Model):
@@ -21,6 +22,9 @@ class Category(models.Model):
             random_product = random.choice(products)
             return random_product.productImage.url
         return None
+    
+    def get_absolute_url(self):
+        return reverse('products_by_category', args=[str(self.categoryName)])
 
 class Product(models.Model):
     productCode = models.CharField(max_length = 200, verbose_name = "Ürün Kodu", unique = True)
@@ -44,3 +48,10 @@ class Product(models.Model):
     def save(self, *args, **kwargs):
         self.productSlug = slugify(self.productName)
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('product_details', args=[str(self.productCategory.categoryName), str(self.productName)])
+    
+class Image(models.Model):
+    product = models.ForeignKey(Product, verbose_name = "Ürün Kodu", on_delete=models.CASCADE)
+    image = models.ImageField(upload_to = "products")

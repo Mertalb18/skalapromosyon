@@ -34,28 +34,24 @@
         <!-- Category list end -->
         <div class="col-xl-10 col-lg-9 col-md-8">
             <div class="row">
+                <!-- Product image start -->
                 <div class="col-lg-7">
-                    <!-- Product image start -->
                     <div class="row">
                         <div class="card card-body border mb-3">
-                            <img src="{{ product.productImage.url }}" class="card-img-top rounded-0" alt="...">
+                            <img id="mainProductImage" src="{{ product.productImage.url }}" class="card-img-top rounded-0" alt="...">
                         </div>
                     </div>
                     <div class="row">
                         <div class="d-flex justify-content-center mb-lg-0 mb-4">
-                            <button type="button" class="p-1 border-1 border-warning me-1">
-                                <img class="product-image" src="https://picsum.photos/200" alt="">
-                            </button>
-                            <button type="button" class="p-1 border-1 border-warning me-1">
-                                <img class="product-image" src="https://picsum.photos/200" alt="">
-                            </button>
-                            <button type="button" class="p-1 border-1 border-warning me-1">
-                                <img class="product-image" src="https://picsum.photos/200" alt="">
-                            </button>
+                            {% for image in images %}
+                                <button type="button" class="p-1 border-1 border-warning me-1" onclick="changeImage('{{ image.image.url }}')">
+                                    <img class="product-image" src="{{ image.image.url }}" alt="">
+                                </button>
+                            {% endfor %}
                         </div>
                     </div>
-                    <!-- Product image end -->
                 </div>
+                <!-- Product image end -->
                 <div class="col-lg-5 position-relative">
                     <!-- Product description start -->
                     <div class="row px-3">
@@ -104,4 +100,16 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Image changing js start
+    function changeImage(newImageUrl) {
+        // Find the main product image element
+        let mainProductImage = document.getElementById('mainProductImage');
+
+        // Set the src attribute of the main product image to the clicked button's image URL
+        mainProductImage.src = newImageUrl;
+    }
+    // Image changing js end
+</script>
 {% endblock content %}
