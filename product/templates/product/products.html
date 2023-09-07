@@ -12,6 +12,7 @@
 <div class="container mb-5">
   <div class="row my-2">
     <div class="d-md-flex d-sm-block align-items-center justify-content-between border py-2">
+      <!-- Breadcrumb start -->
       <nav style="--bs-breadcrumb-divider: '&raquo;'" aria-label="breadcrumb">
         <div class="d-flex align-items-center justify-content-center">
           <ol class="breadcrumb m-md-0 mb-sm-3">
@@ -20,6 +21,8 @@
           </ol>
         </div>
       </nav>
+      <!-- Breadcrumb end -->
+      <!-- Product order list start -->
       <div class="d-flex align-items-center justify-content-center">
         <label for="">Sıralama: &nbsp;</label>
         <div class="dropdown">
@@ -34,17 +37,16 @@
           </ul>
         </div>
       </div>
+      <!-- Product order list end -->
     </div>
   </div>
   <div class="row py-2">
+    <!-- Category list start -->
     <div class="col-xl-2 col-md-4 d-none d-md-block mb-3">
-      <div class="list-group">
-        {% for category in categories %}
-          <a href="{% url 'products_by_category' category.categorySlug %}" class="list-group-item list-group-item-action">
-          {{ category.categoryName }}</a>
-        {% endfor %}
-      </div>
+      {% include "partials/_categories.html" %}
     </div>
+    <!-- Category list end -->
+    <!-- Products by category start -->
     <div class="col-xl-10 col-md-8">
       <div class="row">
         {% for product in products %}
@@ -62,10 +64,12 @@
         {% endfor %}
       </div>
     </div>
+    <!-- Products by category end -->
   </div>
 </div>
 
 <script>
+  // Product order js start
   const sortByBtn = document.getElementById("sort-by-btn");
     const selectedSortOption = "{{ selected_sort_option|default:'stock_asc' }}";
 
@@ -81,5 +85,6 @@
     if (selectedSortOption && sortOptions[selectedSortOption]) {
         sortByBtn.innerText = `${sortOptions[selectedSortOption]}`;
     }
+    // Product order js end
 </script>
 {% endblock content %}

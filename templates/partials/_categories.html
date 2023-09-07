@@ -1,0 +1,9 @@
+<div class="list-group">
+    {% for category in categories %}
+      {% if category.categorySlug == selected_category %}
+        <a href="{% url 'products_by_category' category.categorySlug %}" class="list-group-item list-group-item-action active">{{ category.categoryName }}</a>
+      {% else %}
+        <a href="{% url 'products_by_category' category.categorySlug %}" class="list-group-item list-group-item-action">{{ category.categoryName }}</a>
+      {% endif %}
+    {% endfor %}
+  </div>

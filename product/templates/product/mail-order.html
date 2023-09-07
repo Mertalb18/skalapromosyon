@@ -8,33 +8,36 @@
 {% block title %} Mail Order {% endblock title %}
 
 {% block content %}
-<div class="alert alert-success text-center" role="alert" id="success-alert" style="display: none;">
-    Ürün başarıyla silindi.
-</div>
-<form class="w-auto m-auto mb-5" method="POST" id="orderForm" action="{% url 'mail_order' %}" enctype="multipart/form-data">
+<form class="w-auto m-auto mb-5" method="POST" id="orderForm" action="{% url 'mail_order' %}"
+    enctype="multipart/form-data">
     {% csrf_token %}
-    <div class="container">
+    <div class="container mt-3">
         <div class="row">
+            <!-- Client information form start -->
             <div class="col-lg-6">
                 <h2>Kart Sahibi Bilgileri</h2>
-                <div class="form-floating mb-3">
+                <div class="form-floating my-3">
                     <input type="text" class="form-control" id="floatingInput" name="kullanici_adi" placeholder="Adı">
                     <label for="floatingInput">Adı</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingInput" name="kullanici_soyadi" placeholder="Soyadı">
+                    <input type="text" class="form-control" id="floatingInput" name="kullanici_soyadi"
+                        placeholder="Soyadı">
                     <label for="floatingInput">Soyadı</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingInput" name="kullanici_tel" placeholder="Telefon">
+                    <input type="text" class="form-control" id="floatingInput" name="kullanici_tel"
+                        placeholder="Telefon">
                     <label for="floatingInput">Telefon</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="email" class="form-control" id="floatingInput" name="kullanici_mail" placeholder="E-mail">
+                    <input type="email" class="form-control" id="floatingInput" name="kullanici_mail"
+                        placeholder="E-mail">
                     <label for="floatingInput">E-mail</label>
                 </div>
             </div>
-    
+            <!-- Client information form end -->
+            <!-- Product information form start -->
             <div class="col-lg-6">
                 <table class="table mb-3 m-auto table-striped table-hover">
                     <thead>
@@ -44,27 +47,32 @@
                             <th scope="col">Ürün Adı</th>
                             <th scope="col">Ürün Adedi</th>
                             <th scope="col">Ürün Fiyatı</th>
-                            <th scope="col"><a href="{% url 'cart_clear' %}" class="text-decoration-none text-danger"><i class="fa-solid fa-trash"></i></a></th>
+                            <th scope="col"><a href="{% url 'cart_clear' %}" class="text-decoration-none text-danger"><i
+                                        class="fa-solid fa-trash"></i></a></th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for item in cart %}
-                            <tr>
-                                <th scope="col">{{ forloop.counter }}</th>
-                                <th scope="col" class="d-none d-sm-block">{{ item.code }}</th>
-                                <th scope="col">{{ item.name }}</th>
-                                <th scope="col">{{ item.quantity }}</th>
-                                <th scope="col">{{ item.price }}</th>
-                                <th scope="col"><a href="{% url 'cart_remove' id=item.product.id %}" class="text-decoration-none text-danger"><i class="fa-solid fa-trash"></i></a></th>
-                            </tr>
+                        <tr>
+                            <th scope="col">{{ forloop.counter }}</th>
+                            <th scope="col" class="d-none d-sm-block">{{ item.code }}</th>
+                            <th scope="col">{{ item.name }}</th>
+                            <th scope="col">{{ item.quantity }}</th>
+                            <th scope="col">{{ item.price }}</th>
+                            <th scope="col"><a href="{% url 'cart_remove' id=item.product.id %}"
+                                    class="text-decoration-none text-danger"><i class="fa-solid fa-trash"></i></a></th>
+                        </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
+            <!-- Product information form end -->
+            <!-- Send mail start -->
             <div class="col-12 m-auto text-center d-flex justify-content-between">
                 <button class="btn btn-success" type="submit">Sipariş Oluştur</button>
                 <button class="btn btn-danger" type="reset">Formu Temizle</button>
             </div>
+            <!-- Send mail start -->
         </div>
     </div>
 </form>
