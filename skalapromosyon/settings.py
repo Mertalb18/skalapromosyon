@@ -139,19 +139,14 @@ MESSAGE_TAGS = {
 }
 
 # Email settings
-# EMAIL_HOST = "smtp.gmail.com"  # Use your SMTP server details
+EMAIL_HOST = "smtp.gmail.com"  # Use your SMTP server details
 EMAIL_PORT = 587
-# EMAIL_HOST_USER = "cemilemrearas@gmail.com"  # Use your SMTP username
-# EMAIL_HOST_PASSWORD = "pwvhwhvppoqxzzzy"  # Use your SMTP password
-# EMAIL_SEND_USER = "cemilemrearas@gmail.com"
+EMAIL_HOST_USER = "cemilemrearas@gmail.com"  # Use your SMTP username
+EMAIL_HOST_PASSWORD = "pwvhwhvppoqxzzzy"  # Use your SMTP password
+EMAIL_SEND_USER = "cemilemrearas@gmail.com"
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-
-EMAIL_HOST = "smtp.office365.com"  # Use your SMTP server details
-EMAIL_HOST_USER = "mertalbahar@windowslive.com"  # Use your SMTP username
-EMAIL_HOST_PASSWORD = "qqeshwikflfkptkl"  # Use your SMTP password
-EMAIL_SEND_USER = "mertalbahar@windowslive.com"
 
 CART_SESSION_ID = 'cart'
 SESSION_COOKIE_AGE = 604800

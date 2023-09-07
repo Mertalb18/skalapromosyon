@@ -4,6 +4,7 @@ from product.cart import Cart
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
+from django.db.models import Q
 
 # Create your views here.
 def home(request):
@@ -19,7 +20,6 @@ def home(request):
 
 def products_by_category(request, c_slug):
     categories = Category.objects.all()
-    category = Category.objects.get(categorySlug=c_slug)
     products = Category.objects.get(categorySlug = c_slug).product_set.filter(isActive = True)
 
     sort_option = request.GET.get('sort', 'stock_asc')
@@ -36,7 +36,7 @@ def products_by_category(request, c_slug):
     context = {
         "categories": categories,
         "products": products,
-        "selected_category": category,
+        "selected_category": c_slug,
         "selected_sort_option": sort_option,
     }
 
@@ -49,9 +49,32 @@ def product_details(request, c_slug, p_slug):
     context = {
         "categories": categories,
         "product": product,
+        "selected_category": c_slug,
     }
 
     return render(request, "product/product-details.html", context)
+
+def search(request):
+    categories = Category.objects.all()
+    products = Product.objects.all()
+    search = request.GET.get("search")
+
+    if search:
+        products = Product.objects.filter(
+            Q(productName__icontains=search) | 
+            Q(productCode__icontains=search) | 
+            Q(productCategory__categoryName__icontains = search)
+        )[:1]
+        if len(products) == 0:
+            messages.error(request, "Ürün bulunamadı.")
+
+    context = {
+        "categories": categories,
+        "products": products,
+        "search": search,
+    }
+
+    return render(request, "product/search.html", context)
 
 def cart_add(request, id):
     cart = Cart(request)

@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import Category, Product
 from django.utils.safestring import mark_safe
 
+@admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ("productCode", "productName", "productSlug", "isActive", "isHome", "selected_categories",)
     list_editable = ("isActive", "isHome",)
@@ -17,10 +18,7 @@ class ProductAdmin(admin.ModelAdmin):
         html += "</ul>"
         return mark_safe(html)
 
+@admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("categoryName", "categorySlug",)
     readonly_fields = ("categorySlug",)
-
-# Register your models here.
-admin.site.register(Product, ProductAdmin)
-admin.site.register(Category, CategoryAdmin)

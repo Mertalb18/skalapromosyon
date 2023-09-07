@@ -9,11 +9,14 @@
 {% block title %} Product Details {% endblock title %}
 
 {% block content %}
+<!-- Information message start -->
 <div class="alert alert-success text-center" role="alert" id="success-alert" style="display: none;">
     Ürün başarıyla istek listesine eklendi.
 </div>
+<!-- Information message end -->
 <div class="container mb-5">
     <div class="row">
+        <!-- Breadcrumb start -->
         <div class="d-flex align-items-center justify-content-between border py-2">
             <nav style="--bs-breadcrumb-divider: '&raquo;'" aria-label="breadcrumb">
                 <div class="d-flex align-items-center">
@@ -26,20 +29,18 @@
                 </div>
             </nav>
         </div>
+        <!-- Breadcrumb end -->
     </div>
     <div class="row py-2">
-        <div class="col-xl-2 col-md-4 d-none d-md-block mb-3">
-            <div class="list-group">
-                {% for category in categories %}
-                <a href="{% url 'products_by_category' category.categorySlug %}"
-                    class="list-group-item list-group-item-action">
-                    {{ category.categoryName }}</a>
-                {% endfor %}
-            </div>
+        <!-- Category list start -->
+        <div class="col-xl-2 col-lg-3 col-md-4 d-none d-md-block mb-3">
+            {% include "partials/_categories.html" %}
         </div>
-        <div class="col-xl-10 col-md-8">
+        <!-- Category list end -->
+        <div class="col-xl-10 col-lg-9 col-md-8">
             <div class="row">
                 <div class="col-lg-7">
+                    <!-- Product image start -->
                     <div class="row">
                         <div class="card card-body border mb-3">
                             <img src="{{ product.productImage.url }}" class="card-img-top rounded-0" alt="...">
@@ -58,9 +59,11 @@
                             </button>
                         </div>
                     </div>
+                    <!-- Product image end -->
                 </div>
                 <div class="col-lg-5 position-relative">
-                    <div class="row">
+                    <!-- Product description start -->
+                    <div class="row px-3">
                         <h6 class="card-title text-center mb-3" id="product-name">{{ product.productName }}</h6>
                         <table class="table w-100 mb-3 m-auto table-striped table-hover">
                             <tbody>
@@ -86,17 +89,20 @@
                             <p class="mb-5">{{ product.productInfo }}</p>
                         </div>
                     </div>
-                    <div class="row">
-                        <form class="p-0 d-flex justify-content-between mb-3 position-absolute bottom-0"
+                    <!-- Product description end -->
+                    <div class="row px-3">
+                        <!-- Product adding start -->
+                        <form class="p-0 d-flex justify-content-evenly mb-3 position-absolute start-0 bottom-0"
                             action="{% url 'cart_add' id=product.id %}" method="POST">
                             {% csrf_token %}
                             <div class="d-flex align-items-center">
                                 <label for="quantity" class="m-0 me-2">Adet:</label>
-                                <input type="number" class="form-control product-quantity me-5" name="quantity"
+                                <input type="number" class="form-control product-quantity w-100" name="quantity"
                                     value="1" min="1" max="{{ product.productStock }}">
                             </div>
                             <button class="btn btn-warning" type="submit">Listeye Ekle</button>
                         </form>
+                        <!-- Product adding end -->
                     </div>
                 </div>
             </div>

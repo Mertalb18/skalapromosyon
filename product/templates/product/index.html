@@ -63,9 +63,9 @@
               <p class="m-0 p-2">{{ category.categoryName }}</p>
             </div>
             {% with random_product_image_url=category.get_random_product_image_url %}
-              {% if random_product_image_url %}
-                <img src="{{ random_product_image_url }}" class="card-img-top rounded-0" alt="...">
-              {% endif %}
+            {% if random_product_image_url %}
+            <img src="{{ random_product_image_url }}" class="card-img-top rounded-0" alt="...">
+            {% endif %}
             {% endwith %}
           </div>
         </a>
@@ -90,18 +90,19 @@
   <div class="container mb-5">
     <div class="row py-2"> <!--  Owl carousel yapılacak. Jquery eklentisi -->
       {% for product in products %}
-          <div class="col-lg-3 col-md-4 col-sm-6 card-product">
-            <a href="{% url 'product_details' c_slug=product.productCategory.first.categorySlug p_slug=product.productSlug %}" class="text-decoration-none text-reset">
-              <div class="card card-body border mb-3">
-                <img src="{{ product.productImage.url }}" class="card-img-top rounded-0" alt="...">
-                <hr class="">
-                <h6 class="card-title text-center mb-3">{{ product.productCode }}</h6>
-                <p class="bg-body-secondary rounded p-2 mb-1">Stok: {{ product.productStock }}</p>
-                <p class="text-warning bg-body-secondary rounded p-2 m-0">Fiyat: ₺ {{ product.productPrice }}</p>
-              </div>
-            </a>
+      <div class="col-lg-3 col-md-4 col-sm-6 card-product">
+        <a href="{% url 'product_details' c_slug=product.productCategory.first.categorySlug p_slug=product.productSlug %}"
+          class="text-decoration-none text-reset">
+          <div class="card card-body border mb-3">
+            <img src="{{ product.productImage.url }}" class="card-img-top rounded-0" alt="...">
+            <hr class="">
+            <h6 class="card-title text-center mb-3">{{ product.productCode }}</h6>
+            <p class="bg-body-secondary rounded p-2 mb-1">Stok: {{ product.productStock }}</p>
+            <p class="text-warning bg-body-secondary rounded p-2 m-0">Fiyat: ₺ {{ product.productPrice }}</p>
           </div>
-        {% endfor %}
+        </a>
+      </div>
+      {% endfor %}
     </div>
   </div>
 </aside>
