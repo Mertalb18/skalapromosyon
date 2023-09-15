@@ -2,22 +2,21 @@ from decimal import Decimal
 from django.conf import settings
 from .models import Product
 
-
 class Cart:
     def __init__(self, request):
         self.session = request.session
         cart = self.session.get(settings.CART_SESSION_ID)
         if not cart:
-            cart = self.session[
-                settings.CART_SESSION_ID] = {}
+            cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
 
-    def add(self, product, quantity, override_quantity=False):
+    def add(self, product, quantity=1, override_quantity=False, selected_image_url=None):
         product_id = str(product.id)
         if product_id not in self.cart:
             self.cart[product_id] = {
                 "code": product.productCode,
                 "name": product.productName,
+                "image": selected_image_url or product.productImage.url,  # Use selected image URL if provided,
                 "quantity": 0,
                 "price": str(product.productPrice)
                 }

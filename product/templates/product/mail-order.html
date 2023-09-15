@@ -43,7 +43,8 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col" class="d-none d-sm-block">Ürün Kodu</th>
+                            <th scope="col">Ürün Resmi</th>
+                            <th scope="col">Ürün Kodu</th>
                             <th scope="col">Ürün Adı</th>
                             <th scope="col">Ürün Adedi</th>
                             <th scope="col">Ürün Fiyatı</th>
@@ -53,9 +54,10 @@
                     </thead>
                     <tbody>
                         {% for item in cart %}
-                        <tr>
+                        <tr class="text-center">
                             <th scope="col">{{ forloop.counter }}</th>
-                            <th scope="col" class="d-none d-sm-block">{{ item.code }}</th>
+                            <th scope="col"><img src="{{ item.image }}" alt="{{ item.name }}" width="50"></th>
+                            <th scope="col">{{ item.code }}</th>
                             <th scope="col">{{ item.name }}</th>
                             <th scope="col">{{ item.quantity }}</th>
                             <th scope="col">{{ item.price }}</th>
