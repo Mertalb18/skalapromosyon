@@ -1,8 +1,11 @@
+import os
 from django.db import models
+from django.dispatch import receiver
 from django.utils.text import slugify
 from django.core.validators import MinValueValidator
 import random
 from django.urls import reverse
+from django.db.models.signals import post_delete
 
 # Create your models here.
 class Category(models.Model):
@@ -49,9 +52,24 @@ class Product(models.Model):
         self.productSlug = slugify(self.productName)
         super().save(*args, **kwargs)
 
+    def delete(self, *args, **kwargs):
+        # Delete all images associated with the product
+        for image in self.images.all():
+            image.delete()
+        super().delete(*args, **kwargs)
+
     def get_absolute_url(self):
         return reverse('product_details', args=[str(self.productCategory.categoryName), str(self.productName)])
     
 class Image(models.Model):
-    product = models.ForeignKey(Product, verbose_name = "Ürün Kodu", on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, verbose_name = "Ürün Kodu", on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to = "products")
+
+@receiver(post_delete, sender=Image)
+def delete_image_file(sender, instance, **kwargs):
+    # Delete the associated image file from storage
+    if instance.image:
+        try:
+            os.remove(instance.image.path)
+        except FileNotFoundError:
+            pass
