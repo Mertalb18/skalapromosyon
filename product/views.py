@@ -81,13 +81,13 @@ def search(request):
 def cart_add(request, id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=id)
-
-    if request.method == "POST":
-        quantity = int(request.POST["quantity"])
+    quantity = int(request.POST["quantity"])
+    selected_image_url = request.POST.get('selected_image_url')  # Get the selected image URL
 
     try:  
         cart.add(product=product,
                 quantity=quantity,
+                selected_image_url=selected_image_url,
                 override_quantity=False
                 )
         messages.success(request, "Ürün başarı ile eklendi.")

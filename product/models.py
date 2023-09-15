@@ -53,9 +53,17 @@ class Product(models.Model):
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
+        # Delete the main image first
+        if self.productImage:
+            try:
+                os.remove(self.productImage.path)
+            except FileNotFoundError:
+                pass
+
         # Delete all images associated with the product
         for image in self.images.all():
             image.delete()
+
         super().delete(*args, **kwargs)
 
     def get_absolute_url(self):
