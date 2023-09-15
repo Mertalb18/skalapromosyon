@@ -2,6 +2,9 @@ from django.contrib import admin
 from .models import Category, Product, Image
 from django.utils.safestring import mark_safe
 
+class ImageInline(admin.TabularInline):
+    model = Image
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ("productCode", "productName", "productSlug", "isActive", "isHome", "selected_categories",)
@@ -17,12 +20,10 @@ class ProductAdmin(admin.ModelAdmin):
 
         html += "</ul>"
         return mark_safe(html)
+    
+    inlines = [ImageInline]
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("categoryName", "categorySlug",)
     readonly_fields = ("categorySlug",)
-
-@admin.register(Image)
-class ImageAdmin(admin.ModelAdmin):
-    list_display = ("product",)
