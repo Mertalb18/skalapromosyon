@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 from django.db.models import Q
+from .forms import OrderForm
 
 # Create your views here.
 def home(request):
@@ -128,49 +129,62 @@ def mail_order(request):
     }
     
     if request.method == "POST":
-        personName = request.POST["kullanici_adi"]
-        personSurname = request.POST["kullanici_soyadi"]
-        personPhone = request.POST["kullanici_tel"]
-        personMail = request.POST["kullanici_mail"]
-        cart = Cart(request)
-        counter = 1
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            personName = form.cleaned_data["kullanici_adi"]
+            personSurname = form.cleaned_data["kullanici_soyadi"]
+            personPhone = form.cleaned_data["kullanici_tel"]
+            personMail = form.cleaned_data["kullanici_mail"]
+            cart = Cart(request)
 
-        subject = "Ürün Sipariş Bilgileri"
-        message = f"""
-        Adı: {personName}
-        Soyadı: {personSurname}
-        Telefon No: {personPhone}
-        E-mail: {personMail}
+            if len(cart) > 0:
+                subject = "Ürün Sipariş Bilgileri"
+                message = f"""
+                Adı: {personName}
+                Soyadı: {personSurname}
+                Telefon No: {personPhone}
+                E-mail: {personMail}
 
-        Ürün Sipariş Detayları:
-        """
+                Ürün Sipariş Detayları:
+                """
 
-        for item in cart:
-            productNo = counter
-            productCode = item["code"]
-            productName = item["name"]
-            productQuantity = item["quantity"]
-            message += f"""
-            No: {productNo}
-            Ürün Kodu: {productCode}
-            Ürün Adı: {productName}
-            Miktar: {productQuantity}
-            """
-            counter += 1
+                for counter, item in enumerate(cart, start=1):
+                    productNo = counter
+                    productImage = item["image"]
+                    productCode = item["code"]
+                    productName = item["name"]
+                    productQuantity = item["quantity"]
+                    message += f"""
+                    No: {productNo}
+                    Ürün Resmi: {productImage}
+                    Ürün Kodu: {productCode}
+                    Ürün Adı: {productName}
+                    Miktar: {productQuantity}
+                    """
 
-        try:
-            send_mail(
-                subject,
-                message,
-                settings.EMAIL_HOST_USER,
-                [settings.EMAIL_SEND_USER],
-                fail_silently=False,
-            )
-            messages.success(request, "Siparişiniz başarıyla oluşturuldu. Teşekkür ederiz!")
+                try:
+                    send_mail(
+                        subject,
+                        message,
+                        settings.EMAIL_HOST_USER,
+                        [settings.EMAIL_SEND_USER],
+                        fail_silently=False,
+                    )
+                    
+                    if send_mail:
+                        messages.success(request, "Siparişiniz başarıyla oluşturuldu. Teşekkür ederiz!")
+                        cart.clear()
 
-        except Exception as e:
-            messages.error(request, "Sipariş oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.")
+                except Exception as e:
+                    messages.error(request, "Sipariş oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.")
 
-        return redirect("mail_order")
+                return redirect("mail_order")
+            
+            else:
+                messages.error(request, "Sepete ürün eklemediniz.")
+        
+        else:
+            messages.error(request, "Form alanları boş bırakılamaz!")
+            form = OrderForm()
 
     return render(request, "product/mail-order.html", context)
