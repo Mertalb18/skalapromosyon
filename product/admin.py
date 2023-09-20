@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Category, Product, Image
+from .models import Category, Product, ProductImages
 from django.utils.safestring import mark_safe
 
 class ImageInline(admin.TabularInline):
-    model = Image
+    model = ProductImages
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):

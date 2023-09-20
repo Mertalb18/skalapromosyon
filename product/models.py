@@ -69,11 +69,11 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('product_details', args=[str(self.productCategory.categoryName), str(self.productName)])
     
-class Image(models.Model):
+class ProductImages(models.Model):
     product = models.ForeignKey(Product, verbose_name = "Ürün Kodu", on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to = "products")
 
-@receiver(post_delete, sender=Image)
+@receiver(post_delete, sender=ProductImages)
 def delete_image_file(sender, instance, **kwargs):
     # Delete the associated image file from storage
     if instance.image:

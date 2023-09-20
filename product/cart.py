@@ -42,6 +42,7 @@ class Cart:
         for product in products:
             cart[str(product.id)]["product"] = product
         for item in cart.values():
+            item["image"] = item["image"]
             item["code"] = item["code"]
             item["name"] = item["name"]
             item["price"] = Decimal(item["price"])

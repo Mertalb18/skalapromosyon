@@ -1,11 +1,15 @@
+import os, io
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product, Category, Image
+from .models import Product, Category, ProductImages
 from product.cart import Cart
 from django.contrib import messages
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 from django.db.models import Q
 from .forms import OrderForm
+from django.utils.html import strip_tags
+from django.utils.safestring import mark_safe
+from email.mime.image import MIMEImage
 
 # Create your views here.
 def home(request):
@@ -46,7 +50,7 @@ def products_by_category(request, c_slug):
 def product_details(request, c_slug, p_slug):
     categories = Category.objects.all()
     product = Product.objects.get(productSlug = p_slug)
-    images = Image.objects.filter(product = product)
+    images = ProductImages.objects.filter(product = product)
 
     context = {
         "categories": categories,
@@ -139,41 +143,60 @@ def mail_order(request):
 
             if len(cart) > 0:
                 subject = "Ürün Sipariş Bilgileri"
-                message = f"""
-                Adı: {personName}
-                Soyadı: {personSurname}
-                Telefon No: {personPhone}
-                E-mail: {personMail}
+                plaintext_message = f"""
+                Adı: {personName}<br>
+                Soyadı: {personSurname}<br>
+                Telefon No: {personPhone}<br>
+                E-mail: {personMail}<br>
 
-                Ürün Sipariş Detayları:
+                Ürün Sipariş Detayları:<br><br>
                 """
 
+                email = EmailMultiAlternatives(
+                subject,
+                strip_tags(plaintext_message),
+                settings.EMAIL_HOST_USER,
+                [settings.EMAIL_SEND_USER],
+                )
+
+                html_message = mark_safe(plaintext_message)
                 for counter, item in enumerate(cart, start=1):
-                    productNo = counter
-                    productImage = item["image"]
                     productCode = item["code"]
                     productName = item["name"]
                     productQuantity = item["quantity"]
-                    message += f"""
-                    No: {productNo}
-                    Ürün Resmi: {productImage}
-                    Ürün Kodu: {productCode}
-                    Ürün Adı: {productName}
-                    Miktar: {productQuantity}
+                    
+                    # Split the image URL by "/"
+                    image_parts = item["image"].split("/")
+                    del image_parts[0:2]
+
+                    # Join the parts back together with "/"
+                    modified_image_url = "/".join(image_parts)
+
+                    # Construct the image URL using os.path.join and the MEDIA_URL setting
+                    productImage = os.path.join(settings.MEDIA_ROOT, modified_image_url)
+
+                    # Attach the image to the email using a CID (Content-ID)
+                    with open(productImage, "rb") as image_file:
+                        image_content = image_file.read()
+                        image = MIMEImage(image_content)
+                        image.add_header('Content-ID', f'<image_{counter}>')
+                        image.add_header('Content-Disposition', 'inline')
+                        email.attach(image)
+
+                    html_message += f"""
+                    No: {counter}<br>
+                    Ürün Resmi: <img src="cid:image_{counter}" alt="{productName}" style="max-width: 100px; height: auto;"><br>
+                    Ürün Kodu: {productCode}<br>
+                    Ürün Adı: {productName}<br>
+                    Miktar: {productQuantity}<br><br>
                     """
 
                 try:
-                    send_mail(
-                        subject,
-                        message,
-                        settings.EMAIL_HOST_USER,
-                        [settings.EMAIL_SEND_USER],
-                        fail_silently=False,
-                    )
-                    
-                    if send_mail:
-                        messages.success(request, "Siparişiniz başarıyla oluşturuldu. Teşekkür ederiz!")
-                        cart.clear()
+                    # Attach the HTML content with image references to the email
+                    email.attach_alternative(html_message, "text/html")
+                    email.send()
+                    messages.success(request, "Siparişiniz başarıyla oluşturuldu. Teşekkür ederiz!")
+                    cart.clear()
 
                 except Exception as e:
                     messages.error(request, "Sipariş oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.")
