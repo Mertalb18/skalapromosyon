@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load static %}
-{% load breadcrumb_tags %}
 
 {% block css_files %}
 <link rel="stylesheet" href="{% static 'product/css/product.css' %}">
@@ -16,9 +15,20 @@
       <nav style="--bs-breadcrumb-divider: '&raquo;'" aria-label="breadcrumb">
         <div class="d-flex align-items-center justify-content-center">
           <ol class="breadcrumb m-md-0 mb-sm-3">
-            <li class="breadcrumb-item"><a href="{% url 'home' %}"
-                class="text-decoration-none text-warning fw-normal"><i class="fa-solid fa-house"></i></a></li>
-            {% breadcrumbs request %}
+            <li class="breadcrumb-item">
+              <a href="{% url 'home' %}" class="text-decoration-none text-warning fw-normal">
+                <i class="fa-solid fa-house"></i>
+              </a>
+            </li>
+            {% for category in categories %}
+              {% if category.categorySlug == selected_category %}
+                <li class="breadcrumb-item">
+                  <a href="{% url 'products_by_category' category.categorySlug %}" class="text-decoration-none text-warning fw-normal">
+                    {{ category.categoryName }}
+                  </a>
+                </li>
+              {% endif %}
+            {% endfor %}
           </ol>
         </div>
       </nav>
@@ -52,18 +62,18 @@
     <div class="col-xl-10 col-md-8">
       <div class="row">
         {% for product in products %}
-        <div class="col-xl-3 col-lg-4 col-md-6">
-          <a href="{% url 'product_details' c_slug=product.productCategory.first.categorySlug p_slug=product.productSlug %}"
-            class="text-decoration-none text-reset">
-            <div class="card card-body border mb-3">
-              <img src="{{ product.productImage.url }}" class="card-img-top rounded-0" alt="...">
-              <hr class="">
-              <h6 class="card-title text-center mb-3">{{ product.productCode }}</h6>
-              <p class="bg-body-secondary rounded p-2 mb-1">Stok: {{ product.productStock }}</p>
-              <p class="text-warning bg-body-secondary rounded p-2 m-0">Fiyat: ₺ {{ product.productPrice }}</p>
-            </div>
-          </a>
-        </div>
+          <div class="col-xl-3 col-lg-4 col-md-6">
+            <a href="{% url 'product_details' c_slug=product.productCategory.first.categorySlug p_slug=product.productSlug %}"
+              class="text-decoration-none text-reset">
+              <div class="card card-body border mb-3">
+                <img src="{{ product.productImage.url }}" class="card-img-top rounded-0" alt="...">
+                <hr class="">
+                <h6 class="card-title text-center mb-3">{{ product.productCode }}</h6>
+                <p class="bg-body-secondary rounded p-2 mb-1">Stok: {{ product.productStock }}</p>
+                <p class="text-warning bg-body-secondary rounded p-2 m-0">Fiyat: ₺ {{ product.productPrice }}</p>
+              </div>
+            </a>
+          </div>
         {% endfor %}
       </div>
     </div>

@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load static %}
-{% load breadcrumb_tags %}
 
 {% block css_files %}
 <link rel="stylesheet" href="{% static 'product/css/product.css' %}">
@@ -12,14 +11,30 @@
 <div class="container mb-5">
     <div class="row">
         <!-- Breadcrumb start -->
-        <div class="d-flex align-items-center justify-content-between border py-2">
+        <div class="d-flex align-items-center justify-content-between border py-3">
             <nav style="--bs-breadcrumb-divider: '&raquo;'" aria-label="breadcrumb">
                 <div class="d-flex align-items-center">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="{% url 'home' %}"
-                                class="text-decoration-none text-warning fw-normal" data-category="" data-product=""><i
-                                    class="fa-solid fa-house"></i></a></li>
-                        {% breadcrumbs request %}
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'home' %}" class="text-decoration-none text-warning fw-normal"
+                                data-category="" data-product="">
+                                <i class="fa-solid fa-house"></i>
+                            </a>
+                        </li>
+                        {% for category in categories %}
+                            {% if category.categorySlug == selected_category %}
+                                <li class="breadcrumb-item">
+                                    <a href="{% url 'products_by_category' category.categorySlug %}" class="text-decoration-none text-warning fw-normal">
+                                        {{ category.categoryName }}
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="{% url 'product_details' c_slug=product.productCategory.first.categorySlug p_slug=product.productSlug %}" class="text-decoration-none text-warning fw-normal">
+                                        {{ product.productName }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
                     </ol>
                 </div>
             </nav>
