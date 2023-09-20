@@ -12,18 +12,22 @@ class Cart:
 
     def add(self, product, quantity=1, override_quantity=False, selected_image_url=None):
         product_id = str(product.id)
-        if product_id not in self.cart:
-            self.cart[product_id] = {
+        image_key = selected_image_url or product.productImage.url  # Use selected image URL if provided
+        cart_item_key = f"{product_id}_{image_key}"  # Create a unique key based on product and image
+
+        if cart_item_key not in self.cart:
+            self.cart[cart_item_key] = {
                 "code": product.productCode,
                 "name": product.productName,
-                "image": selected_image_url or product.productImage.url,  # Use selected image URL if provided,
+                "image": image_key,
                 "quantity": 0,
-                "price": str(product.productPrice)
-                }
+                "price": str(product.productPrice),
+            }
+
         if override_quantity:
-            self.cart[product_id]['quantity'] = quantity
+            self.cart[cart_item_key]['quantity'] = quantity
         else:
-            self.cart[product_id]['quantity'] += quantity
+            self.cart[cart_item_key]['quantity'] += quantity
         self.save()
 
     def save(self):
@@ -36,18 +40,21 @@ class Cart:
         self.save()
 
     def __iter__(self):
-        product_ids = self.cart.keys()
+        product_ids = [cart_item_key.split('_')[0] for cart_item_key in self.cart.keys()]
         products = Product.objects.filter(id__in=product_ids)
         cart = self.cart.copy()
+
         for product in products:
-            cart[str(product.id)]["product"] = product
-        for item in cart.values():
-            item["image"] = item["image"]
-            item["code"] = item["code"]
-            item["name"] = item["name"]
-            item["price"] = Decimal(item["price"])
-            item["total_price"] = item["price"] * item["quantity"]
-            yield item
+            for image_url in set(cart_item_key.split('_')[1] for cart_item_key in self.cart.keys() if cart_item_key.startswith(str(product.id))):
+                cart_item_key = f"{str(product.id)}_{image_url}"
+                item = cart[cart_item_key]
+                item["product"] = product
+                item["image"] = item["image"]
+                item["code"] = item["code"]
+                item["name"] = item["name"]
+                item["price"] = Decimal(item["price"])
+                item["total_price"] = item["price"] * item["quantity"]
+                yield item
 
     def __len__(self):
         return sum(item['quantity'] for item in self.cart.values())
